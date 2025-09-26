@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:lab7_106/model/student.dart';
 
+
 class StudentScreen extends StatefulWidget {
 static const routeName = '/';
 const StudentScreen({Key? key}) : super(key: key);
@@ -80,7 +81,10 @@ Text(snapshot.data![index].studentCode),
 trailing: Wrap(
 children: [
 IconButton(
-onPressed: () {},
+onPressed: () {
+Navigator.push(context, MaterialPageRoute(
+builder: (context) =>EditStudentScreen(student: snapshot.data![index]),));
+},
 icon: Icon(Icons.edit)),
 IconButton(
 onPressed: () async {
@@ -176,4 +180,38 @@ return response.statusCode;
 // then throw an exception.
 throw Exception('Failed to delete student.');
 }
+}
+Future<int> updateStudent(Student student) async {
+final response = await http.put(
+Uri.parse('http://http://172.21.64.1/Lab7 9.26/api/student.php'),
+headers: <String, String>{
+'Content-Type': 'application/json; charset=UTF-8',
+},
+body: jsonEncode(<String, String>{
+'student_code': student.studentCode,
+'student_name': student.studentName,
+'gender': student.gender,
+}),
+);
+if (response.statusCode == 200) {
+// If the server did return a 200 OK response,
+// then parse the JSON.
+return response.statusCode;
+} else {
+// If the server did not return a 200 OK response,
+// then throw an exception.
+throw Exception('Failed to update student.');
+}
+}
+Future<int> insertStudent(Student student) async {
+final response = await http.post(Uri.parse('http://http://172.21.64.1/Lab7 9.26/api/student.php'),
+headers: <String, String>{
+'Content-Type': 'application/json; charset=UTF-8',
+},
+body: jsonEncode(<String, String>{
+'student_code': student.studentCode,
+'student_name': student.studentName,
+'gender': student.gender,
+}),
+);
 }

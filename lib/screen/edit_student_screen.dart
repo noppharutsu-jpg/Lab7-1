@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../model/student.dart';
+import 'edit_student_screen.dart';
 import 'package:http/http.dart' as http;
 class EditStudentScreen extends StatefulWidget {
 final Student? student;
