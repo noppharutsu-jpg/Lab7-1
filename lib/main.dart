@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
-import './screen/student_screen.dart';
- 
+// เปลี่ยน import มาที่ home_screen.dart ซึ่งเป็นหน้าหลักใหม่ของเรา
+import './screen/home_screen.dart'; 
+
 void main(){
-    runApp(MyApp());
+    runApp(const MyApp());
 }
- 
-// ส่วนของ Stateless widget
+
 class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            title: 'Lab7',
-            home: StudentScreen()
+            title: 'Flutter App',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            // เปลี่ยน home ให้แสดง HomeScreen เป็นหน้าแรก
+            home: const HomeScreen() 
         );
     }
 }
