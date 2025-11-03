@@ -1,18 +1,28 @@
 class Student {
-final String studentCode;
-final String studentName;
-final String gender;
-Student({
-required this.studentCode,
-required this.studentName,
-required this.gender,
-});
-// ส่วนของ name constructor ทีÉจะแปลง json string มาเป็น Student object
-factory Student.fromJson(Map<String, dynamic> json) {
-return Student(
-studentCode: json['student_code'],
-studentName: json['student_name'],
-gender: json['gender'],
-);
-}
+  final String studentCode;
+  final String studentName;
+  final String gender;
+
+  Student({
+    required this.studentCode,
+    required this.studentName,
+    required this.gender,
+  });
+
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      studentCode: json['student_code'],
+      studentName: json['student_name'],
+      gender: json['gender'],
+    );
+  }
+
+  // --- เพิ่มฟังก์ชันนี้เข้าไป ---
+  Map<String, dynamic> toJson() {
+    return {
+      'student_code': studentCode,
+      'student_name': studentName,
+      'gender': gender,
+    };
+  }
 }

@@ -1,66 +1,63 @@
 import 'package:flutter/material.dart';
-import '../model/student.dart';
+import '../model/course.dart'; // เปลี่ยนเป็น Course model
 import '../services/api_service.dart'; // Import ApiService
-import 'edit_student_screen.dart';
-import 'add_student_screen.dart'; // Import หน้า Add ใหม่
+import 'edit_course_screen.dart'; // เปลี่ยนเป็น EditCourseScreen
+import 'add_course_screen.dart';  // เปลี่ยนเป็น AddCourseScreen
 
-class StudentScreen extends StatefulWidget {
-  static const routeName = '/';
-  const StudentScreen({super.key});
+class CourseScreen extends StatefulWidget {
+  const CourseScreen({super.key});
   @override
   State<StatefulWidget> createState() {
-    return _StudentScreenState();
+    return _CourseScreenState();
   }
 }
 
-class _StudentScreenState extends State<StudentScreen> {
-  late Future<List<Student>> studentsFuture;
+class _CourseScreenState extends State<CourseScreen> {
+  late Future<List<Course>> coursesFuture;
 
   @override
   void initState() {
     super.initState();
-    _loadStudents();
+    _loadCourses();
   }
 
-  void _loadStudents() {
+  void _loadCourses() {
     setState(() {
-      studentsFuture = ApiService.fetchStudents();
+      coursesFuture = ApiService.fetchCourses();
     });
   }
 
   void _navigateToAddScreen() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AddStudentScreen()),
+      MaterialPageRoute(builder: (context) => const AddCourseScreen()),
     );
-    // ถ้าหน้า Add ส่งผลลัพธ์กลับมาว่ามีการเพิ่มข้อมูลสำเร็จ ให้โหลดใหม่
     if (result == true) {
-      _loadStudents();
+      _loadCourses();
     }
   }
 
-  void _navigateToEditScreen(Student student) async {
+  void _navigateToEditScreen(Course course) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditStudentScreen(student: student),
+        builder: (context) => EditCourseScreen(course: course),
       ),
     );
-    // ถ้าหน้า Edit ส่งผลลัพธ์กลับมาว่ามีการแก้ไขสำเร็จ ให้โหลดใหม่
     if (result == true) {
-      _loadStudents();
+      _loadCourses();
     }
   }
 
-  void _deleteStudent(String studentCode) async {
-      bool success = await ApiService.deleteStudent(studentCode);
+  void _deleteCourse(String courseCode) async {
+      bool success = await ApiService.deleteCourse(courseCode);
       if(success){
-         ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('ลบข้อมูลสำเร็จ'), backgroundColor: Colors.green),
           );
-          _loadStudents(); // โหลดข้อมูลใหม่หลังลบ
+          _loadCourses(); // โหลดข้อมูลใหม่หลังลบ
       } else {
-           ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('เกิดข้อผิดพลาดในการลบ'), backgroundColor: Colors.red),
           );
       }
@@ -70,16 +67,16 @@ class _StudentScreenState extends State<StudentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student List'),
+        title: const Text('Course List'), // เปลี่ยน Title
         actions: [
           IconButton(
-            onPressed: _navigateToAddScreen, // เรียกใช้ฟังก์ชันเพิ่ม
+            onPressed: _navigateToAddScreen,
             icon: const Icon(Icons.add),
           )
         ],
       ),
-      body: FutureBuilder<List<Student>>(
-        future: studentsFuture,
+      body: FutureBuilder<List<Course>>(
+        future: coursesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -88,27 +85,27 @@ class _StudentScreenState extends State<StudentScreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No students found.'));
+            return const Center(child: Text('No courses found.')); // เปลี่ยนข้อความ
           }
 
-          final students = snapshot.data!;
+          final courses = snapshot.data!;
           return ListView.builder(
-            itemCount: students.length,
+            itemCount: courses.length,
             itemBuilder: (context, index) {
-              final student = students[index];
+              final course = courses[index];
               return ListTile(
-                title: Text(student.studentName),
-                subtitle: Text(student.studentCode),
+                title: Text(course.courseName), // เปลี่ยนเป็น courseName
+                subtitle: Text("Credits: ${course.credit}"), // เปลี่ยน Subtitle ให้เหมาะสม
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: const Icon(Icons.edit, color: Colors.blue),
-                      onPressed: () => _navigateToEditScreen(student),
+                      onPressed: () => _navigateToEditScreen(course),
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _deleteStudent(student.studentCode),
+                      onPressed: () => _deleteCourse(course.courseCode), // เปลี่ยนเป็น courseCode
                     ),
                   ],
                 ),
@@ -118,7 +115,7 @@ class _StudentScreenState extends State<StudentScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _loadStudents,
+        onPressed: _loadCourses,
         child: const Icon(Icons.refresh),
       ),
     );
