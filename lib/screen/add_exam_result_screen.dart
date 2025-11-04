@@ -81,7 +81,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   return const Text('Could not load students');
                 }
                 return DropdownButtonFormField<String>(
-                  value: _selectedStudentCode,
+                  initialValue: _selectedStudentCode,
                   hint: const Text('Select Student'),
                   decoration: const InputDecoration(border: OutlineInputBorder()),
                   items: snapshot.data!.map((student) {
@@ -110,7 +110,7 @@ class _AddExamResultScreenState extends State<AddExamResultScreen> {
                   return const Text('Could not load courses');
                 }
                 return DropdownButtonFormField<String>(
-                  value: _selectedCourseCode,
+                  initialValue: _selectedCourseCode,
                   hint: const Text('Select Course'),
                   decoration: const InputDecoration(border: OutlineInputBorder()),
                   items: snapshot.data!.map((course) {

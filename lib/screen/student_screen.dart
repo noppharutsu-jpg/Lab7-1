@@ -55,11 +55,13 @@ class _StudentScreenState extends State<StudentScreen> {
   void _deleteStudent(String studentCode) async {
       bool success = await ApiService.deleteStudent(studentCode);
       if(success){
+        if (!mounted) return;
          ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('ลบข้อมูลสำเร็จ'), backgroundColor: Colors.green),
           );
           _loadStudents(); // โหลดข้อมูลใหม่หลังลบ
       } else {
+        if (!mounted) return;
            ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('เกิดข้อผิดพลาดในการลบ'), backgroundColor: Colors.red),
           );

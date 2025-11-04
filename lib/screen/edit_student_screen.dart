@@ -86,7 +86,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: dropdownValue, // ใช้ value แทน initialValue
+              initialValue: dropdownValue, // ใช้ value แทน initialValue
               onChanged: (String? value) {
                 setState(() {
                   dropdownValue = value!;

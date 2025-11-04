@@ -52,11 +52,13 @@ class _CourseScreenState extends State<CourseScreen> {
   void _deleteCourse(String courseCode) async {
       bool success = await ApiService.deleteCourse(courseCode);
       if(success){
-          ScaffoldMessenger.of(context).showSnackBar(
+        if (!mounted) return;
+         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('ลบข้อมูลสำเร็จ'), backgroundColor: Colors.green),
           );
           _loadCourses(); // โหลดข้อมูลใหม่หลังลบ
       } else {
+        if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('เกิดข้อผิดพลาดในการลบ'), backgroundColor: Colors.red),
           );
