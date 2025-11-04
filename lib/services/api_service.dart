@@ -5,19 +5,24 @@ import '../model/course.dart';
 import '../model/exam_result.dart'; // <-- เพิ่ม import นี้
 
 class ApiService {
-  static const String baseUrl = 'http://172.21.64.1/Lab7 9.26/api';
+  static const String baseUrl = 'http://172.21.64.1/Lab7_9.26/api';
+
 
   // --- Student Functions ---
-  static Future<List<Student>> fetchStudents() async {
+static Future<List<Student>> fetchStudents() async {
+  try {
     final response = await http.get(Uri.parse('$baseUrl/student.php'));
     if (response.statusCode == 200) {
       return (json.decode(response.body) as List)
           .map((data) => Student.fromJson(data))
           .toList();
     } else {
-      throw Exception('Failed to load students');
+      throw Exception('Failed to load students: ${response.statusCode}');
     }
+  } catch (e) {
+    throw Exception('Error fetching students: $e');
   }
+}
 
   static Future<bool> addStudent(Student student) async {
     final response = await http.post(
