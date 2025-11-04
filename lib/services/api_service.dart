@@ -5,7 +5,7 @@ import '../model/course.dart';
 import '../model/exam_result.dart'; // <-- เพิ่ม import นี้
 
 class ApiService {
-  static const String baseUrl = 'http://172.21.64.1/Lab7_9.26/api';
+  static const String baseUrl = 'http://192.168.56.1/Lab7_9.26/api';
 
 
   // --- Student Functions ---
